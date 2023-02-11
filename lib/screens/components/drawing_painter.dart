@@ -10,7 +10,7 @@ class DrawingPainter extends CustomPainter {
   List<Offset> offsetList = [];
   @override
   void paint(Canvas canvas, Size size) {
-    for (int i = 0; i < drawpoints.length; i++) {
+    for (int i = 0; i < drawpoints.length-1; i++) {
       if (drawpoints[i] != null && drawpoints[i + 1] != null) {
         canvas.drawLine(drawpoints[i]!.offset, drawpoints[i + 1]!.offset,
             drawpoints[i]!.paint);
@@ -27,4 +27,3 @@ class DrawingPainter extends CustomPainter {
     return true;
   }
 }
-
