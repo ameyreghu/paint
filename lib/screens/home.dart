@@ -83,7 +83,7 @@ class _PaintScreenState extends State<PaintScreen> {
               ),
             ),
             Positioned(
-                top: size.height * 0.01,
+                top: size.height * 0.02,
                 right: size.width * 0.01,
                 child: Row(
                   children: [
