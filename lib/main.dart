@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:paint/screens/home.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const PaintApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class PaintApp extends StatelessWidget {
+  const PaintApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

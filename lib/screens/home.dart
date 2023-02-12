@@ -21,8 +21,25 @@ class _PaintScreenState extends State<PaintScreen> {
     Colors.green,
     Colors.pink,
     Colors.amber,
-    Colors.amberAccent
+    Colors.amberAccent,
+    Colors.white,
+    Colors.teal,
+    Colors.redAccent
   ];
+
+  List<int> latIndex = [];
+
+  void undo() {
+    if (latIndex.isEmpty) {
+      return;
+    }
+    drawPoints.removeRange(latIndex.last, drawPoints.length - 1);
+    latIndex.removeLast();
+  }
+
+  void clear() {
+    drawPoints.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +50,7 @@ class _PaintScreenState extends State<PaintScreen> {
           children: [
             GestureDetector(
               onPanStart: (details) {
+                latIndex.add(drawPoints.isEmpty ? 0 : drawPoints.length - 1);
                 setState(() {
                   drawPoints.add(DrawPoints(
                       details.localPosition,
@@ -79,13 +97,9 @@ class _PaintScreenState extends State<PaintScreen> {
                         });
                       },
                     ),
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            drawPoints.clear();
-                          });
-                        },
-                        child: const Text('Clear'))
+                    IconButton(
+                        onPressed: undo, icon: const Icon(Icons.undo_rounded)),
+                    TextButton(onPressed: clear, child: const Text('Clear')),
                   ],
                 ))
           ],
@@ -94,29 +108,35 @@ class _PaintScreenState extends State<PaintScreen> {
             child: Container(
           color: const Color.fromARGB(255, 58, 57, 57),
           padding: const EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(
-                colors.length, (index) => _colorChooser(colors[index])),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.generate(
+                  colors.length, (index) => _buildColorSelector(colors[index])),
+            ),
           ),
         )),
       ),
     );
   }
 
-  Widget _colorChooser(Color color) {
+  Widget _buildColorSelector(Color color) {
     bool isSelected = selectedColor == color;
     return GestureDetector(
       onTap: () => setState(() {
         selectedColor = color;
       }),
-      child: Container(
-        height: isSelected ? 47 : 40,
-        width: isSelected ? 47 : 40,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-          border: isSelected ? Border.all(color: Colors.white, width: 3) : null,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: Container(
+          height: isSelected ? 47 : 40,
+          width: isSelected ? 47 : 40,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+            border:
+                isSelected ? Border.all(color: Colors.white, width: 3) : null,
+          ),
         ),
       ),
     );
